@@ -59,13 +59,13 @@ A hosted version of Num2Word is available here:
 
 ### 1. Manual Text Entry
 
-1. Select **“Manual Text Entry”** in the sidebar.
+1. Select **"Manual Text Entry"** in the sidebar.
 
 2. Type or paste a sentence that contains an integer, e.g.:
 
    > `The database has 66723107008 records.`
 
-3. Click **“Convert”**.
+3. Click **"Convert"**.
 
 4. The app shows:
 
@@ -74,13 +74,13 @@ A hosted version of Num2Word is available here:
 
 ### 2. Upload Text File
 
-1. Select **“Upload Text File”** in the sidebar.
+1. Select **"Upload Text File"** in the sidebar.
 2. Upload a `.txt` file where **each line** is a sentence.
 3. Each non-empty line is processed:
 
    * The first integer is extracted and converted.
    * Results are shown in a table (`Input`, `Output`).
-4. You can download the results as a **CSV** via the “Download Results as CSV” button.
+4. You can download the results as a **CSV** via the "Download Results as CSV" button.
 
 ---
 
@@ -359,11 +359,11 @@ For each non-zero chunk:
     return prefix + ", ".join(formatted_segments).strip()
 ```
 
-#### 4.4 Final formatting and cross-chunk “and”
+#### 4.4 Final formatting and cross-chunk "and"
 
 To produce natural-sounding English:
 
-* If there is **more than one chunk**, and the **last chunk’s numeric value is less than 100**, then:
+* If there is **more than one chunk**, and the **last chunk's numeric value is less than 100**, then:
 
   * The last two segments are merged with `" and "`.
   * Example: `10_022`:
@@ -438,7 +438,7 @@ In `app.py`:
 
   * The user types a sentence.
 
-  * When they click **“Convert”**, the app calls:
+  * When they click **"Convert"**, the app calls:
 
     ```python
     result = converter.process_sentence(user_input)
