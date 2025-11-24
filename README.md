@@ -51,7 +51,7 @@ Then open the URL Streamlit prints in your terminal (usually `http://localhost:8
 
 A hosted version of Num2Word is available here:
 
-> **Live app:** `<deployed-url-here>`
+> **Live app:** `https://zanderbraam-num-2-word-app-1wtz2x.streamlit.app/`
 
 ---
 
