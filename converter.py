@@ -2,6 +2,7 @@ import re
 
 INVALID_MESSAGE = "number invalid"
 NUMBER_TOO_LARGE_MESSAGE = "number too large"
+NUMBER_PATTERN = re.compile(r"(?<![#\w])[-+]?\d(?:[\d,\s]*\d)?(?![#\w])")
 
 
 class NumberConverter:
@@ -151,12 +152,16 @@ class NumberConverter:
             English words for the first integer in the text, or ``number invalid``
             when no valid number exists or parsing fails.
         """
-        match = re.search(r"[-+]?\d+", sentence)
+        match = NUMBER_PATTERN.search(sentence)
         if not match:
             return INVALID_MESSAGE
 
+        candidate = match.group()
+        if " " in candidate or "," in candidate:
+            return INVALID_MESSAGE
+
         try:
-            value = int(match.group())
+            value = int(candidate)
         except ValueError:
             return INVALID_MESSAGE
 

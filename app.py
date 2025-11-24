@@ -19,13 +19,17 @@ st.sidebar.header("Input Method")
 input_method = st.sidebar.radio("Choose input:", ["Manual Text Entry", "Upload Text File"])
 
 if input_method == "Manual Text Entry":
-    user_input = st.text_input("Enter a sentence containing a number:", "The database has 66723107008 records.")
-    
+    user_input = st.text_area(
+        "Enter a sentence containing a number:",
+        "The database has 66723107008 records.",
+    )
+
     if st.button("Convert"):
-        if user_input:
+        if user_input.strip():
             result = converter.process_sentence(user_input)
             st.subheader("Result")
-            st.success(result)
+            st.write(f"**Input:** {user_input}")
+            st.success(f"**Output:** {result}")
         else:
             st.warning("Please enter text.")
 
@@ -34,26 +38,28 @@ elif input_method == "Upload Text File":
     uploaded_file = st.sidebar.file_uploader("Choose a file", type="txt")
     
     if uploaded_file is not None:
-        # Read file
         stringio = StringIO(uploaded_file.getvalue().decode("utf-8"))
-        lines = stringio.readlines()
-        
         results = []
-        for line in lines:
-            line = line.strip()
-            if line:
+        for raw_line in stringio:
+            line = raw_line.strip()
+            if not line:
+                continue
+            try:
                 output = converter.process_sentence(line)
-                results.append({"Input": line, "Output": output})
-        
-        # Display Dataframe
-        df = pd.DataFrame(results)
-        st.dataframe(df, use_container_width=True)
-        
-        # Option to download results (Enhancement)
-        csv = df.to_csv(index=False).encode('utf-8')
-        st.download_button(
-            "Download Results as CSV",
-            csv,
-            "conversion_results.csv",
-            "text/csv"
-        )
+            except Exception as exc:
+                output = f"error: {exc}"
+            results.append({"Input": line, "Output": output})
+
+        if not results:
+            st.warning("No non-empty lines found in the uploaded file.")
+        else:
+            df = pd.DataFrame(results)
+            st.dataframe(df, use_container_width=True)
+
+            csv = df.to_csv(index=False).encode("utf-8")
+            st.download_button(
+                "Download Results as CSV",
+                csv,
+                "conversion_results.csv",
+                "text/csv",
+            )
